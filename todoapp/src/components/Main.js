@@ -1,27 +1,27 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, StatusBar, TextInput, ScrollView } from 'react-native'
+import {connect} from 'react-redux'
 import TodoItem from './TodoItem'
+import {addTodo} from '../redux/actions'
 
-export default class Main extends Component {
+class Main extends Component {
+
+    state = {
+        newTodoText: ""
+    }
+
+    addNewTodo=()=>{
+        const { newTodoText } = this.state;
+        if (newTodoText && newTodoText!=""){
+            this.setState({ newTodoText: "" })
+            this.props.dispatch(addTodo(newTodoText))
+        }
+    }
+
     render() {
 
-        const temporalTodos = [
-            {
-                id: "123455678",
-                text: "hola mundo xd"
-            },
-            {
-                id: "1236775678",
-                text: "hola mundo xd"
-            },
-            {
-                id: "1237677609",
-                text: "hola mundo xd"
-            }
-        ]
-
         const renderTodos = () => {
-            return temporalTodos.map((todo) => (<TodoItem text={todo.text} key={todo.id} id={todo.id} />))
+            return this.props.todos.map((todo) => (<TodoItem text={todo.text} key={todo.id} id={todo.id} />))
         }
 
         return (
@@ -31,7 +31,13 @@ export default class Main extends Component {
                     <Text style={styles.title}> To-Do </Text>
                 </View>
                 <View style={styles.inputContainer}>
-                    <TextInput style={styles.input} />
+                    <TextInput
+                    onChange={(e)=>{ this.setState({newTodoText: e.nativeEvent.text}) }}
+                    value={this.state.newTodoText}
+                    returnKeyType="done"
+                    placeholder="nuevo To-Do"
+                    onSubmitEditing={this.addNewTodo}
+                    style={styles.input} />
                 </View>
                 <ScrollView
                 automaticallyAdjustContentInsets={false}
@@ -76,3 +82,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     }
 })
+
+const mapStateToProps = (state) => {
+    return {
+        todos: state.todos
+    }
+}
+
+export default connect(mapStateToProps)(Main)

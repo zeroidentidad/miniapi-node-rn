@@ -1,14 +1,23 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import {connect} from 'react-redux'
+import {deleteTodo} from '../redux/actions'
 
-export default class TodoItem extends Component {
+class TodoItem extends Component {
+
+    deleteSelf=()=>{
+        this.props.dispatch(deleteTodo(this.props.id))
+    } 
+   
     render() {
         return (
+            <TouchableOpacity onPress={this.deleteSelf}>
             <View style={styles.todoContainer}>
                 <Text style={styles.todoText}>
                     {this.props.text}
                 </Text>
             </View>
+            </TouchableOpacity>
         )
     }
 }
@@ -27,3 +36,5 @@ const styles = StyleSheet.create({
     todoText: {
     },
 })
+
+export default connect()(TodoItem)
