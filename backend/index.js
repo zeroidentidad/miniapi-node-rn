@@ -14,7 +14,7 @@ app.use(bodyParser.json())
 app.use('/v1', router)
 
 var PORT = process.env.PORT || 3000
-var HOST = process.env.HOST || '127.0.0.1'
+var HOST = process.env.HOST || 'localhost'
 
 console.log('Start on', HOST, PORT)
 app.listen(PORT, HOST)
