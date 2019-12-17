@@ -40,3 +40,8 @@ exports.signup = function(req, res, next) {
         })
     })
 }
+
+exports.signin = function(req, res, next) {
+    var user = req.user;
+    res.send({token: tokenForUser(user), user_id: user._id})
+}
