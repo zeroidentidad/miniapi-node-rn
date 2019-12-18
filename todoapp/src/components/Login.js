@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { reduxForm, Field, formValueSelector } from 'redux-form';
 import FTextInput from './FTextInput'
-import {authUser} from '../redux/actions';
+import {authUser, addAlert} from '../redux/actions';
 
 const valRequired = value => {
   let result = value ? undefined : `No debe dejar vacío`;
@@ -18,8 +18,8 @@ class Login extends Component {
 
   onSignIn = () => {
     const { email, password } = this.props
-    alert(email)
-    this.props.dispatch(authUser('fakeid'))
+    //this.props.dispatch(authUser('fakeid'))
+    this.props.dispatch(addAlert(email))
   }
 
   onSignUp = () => {

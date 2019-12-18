@@ -1,25 +1,35 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import {Text, View, StyleSheet, StatusBar} from 'react-native'
 import {connect} from 'react-redux'
 //import TodoItem from './TodoItem'
 //import {addTodo} from '../redux/actions'
 import Login from './Login'
 import TodoMain from './TodoMain'
+import AlertContainer from './alerts/AlertContainer';
 
 class Main extends Component {
 
     state = {}
 
     render() {
-      if (this.props.user_id) {
-        return (
-          <TodoMain />
-        );
-      } else {
-        return (
-          <Login />
-        );
+      const renderMainView = () => {
+        if (this.props.user_id) {
+          return (
+            <TodoMain />
+          );
+        } else {
+          return (
+            <Login />
+          );
+        }
       }
+      return (
+        <View style={{ flex: 1 }}>
+          <StatusBar barStyle="light-content" />
+          {renderMainView()}
+          <AlertContainer />
+        </View>
+      )
     }
 }
 

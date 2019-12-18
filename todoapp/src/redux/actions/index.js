@@ -1,4 +1,5 @@
 export * from './authActions';
+export * from './alertsActions';
 
 /*exports.addTodo = (text) => {
     return {
