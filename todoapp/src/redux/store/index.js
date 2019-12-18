@@ -4,7 +4,7 @@ import reducer from '../reducer';
 import { AsyncStorage } from 'react-native';
 
 const defaultState = {
-    todos: []
+    //todos: []
 }
 
 const persistConfig = {

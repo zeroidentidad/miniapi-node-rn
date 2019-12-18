@@ -1,9 +1,29 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
-import { reduxForm } from 'redux-form';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { reduxForm, Field } from 'redux-form';
+import FTextInput from './FTextInput'
 
-export default class Login extends Component {
-    render() {
+const valRequired = value => {
+  let result = value ? undefined : `No debe dejar vacío`;
+  return result;
+} 
+
+class Login extends Component {
+
+  state = {
+    loading: false
+  }
+
+  onSignIn = () => {
+
+  }
+
+  onSignUp = () => {
+
+  }
+
+    render() {  
+
         return (
         <View style={styles.container}>
           <View style={styles.titleContainer}>
@@ -12,28 +32,30 @@ export default class Login extends Component {
             </Text>
           </View>
           <View style={styles.field}>
-            <TextInput
+            <Field
+              name={'email'}
+              component={FTextInput}
               placeholder="Email"
-              style={styles.textInput}/>
-            <View>
-            {/**/}
-            </View>
+              style={styles.textInput}
+              validate={[valRequired]}              
+              />             
           </View>
           <View style={styles.field}>
-            <TextInput
+            <Field
+              name={'password'}
+              component={FTextInput}
               placeholder="Password"
-              style={styles.textInput}/>
-            <View>
-            {/**/}
-            </View>
+              style={styles.textInput}
+              validate={[valRequired]}               
+              />
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={this.onSignIn}>
               <Text style={styles.button}>
                 Ingresar
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+              <TouchableOpacity onPress={this.onSignUp}>
               <Text style={styles.button}>
                 Registrarse
               </Text>
@@ -71,7 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   textInput: {
-    height: 26
+    height: 40
   },
   buttonContainer: {
     padding: 20,
@@ -87,3 +109,7 @@ const styles = StyleSheet.create({
     color: 'red'
   }
 });
+
+export default reduxForm({
+  form: 'login'
+})(Login)

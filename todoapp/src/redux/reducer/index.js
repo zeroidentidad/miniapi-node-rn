@@ -1,6 +1,12 @@
-import uuid from 'uuid'
+//import uuid from 'uuid'
+import {combineReducers} from 'redux';
+import {reducer as formReducer} from 'redux-form'
 
-module.exports = (state, action) => {
+module.exports = combineReducers({
+    form: formReducer
+})
+
+/*module.exports = (state, action) => {
     switch (action.type) {
         case 'ADD_TODO':
             let newTodos = [
@@ -12,18 +18,8 @@ module.exports = (state, action) => {
             ];
             return {
                 todos: newTodos
-            }
-        case 'DELETE_TODO':
-            newTodos = state.todos.filter((todo)=>{
-                if(todo.id==action.id){
-                    return false
-                }
-                return true
-            })
-            return {
-                todos: newTodos
-            }                      
+            }                     
         default:
             return state;
     }
-}
+}*/
