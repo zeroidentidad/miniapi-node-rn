@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import { reduxForm, Field } from 'redux-form';
+import { connect } from 'react-redux'
+import { reduxForm, Field, formValueSelector } from 'redux-form';
 import FTextInput from './FTextInput'
+import {authUser} from '../redux/actions';
 
 const valRequired = value => {
   let result = value ? undefined : `No debe dejar vacío`;
@@ -15,7 +17,9 @@ class Login extends Component {
   }
 
   onSignIn = () => {
-
+    const { email, password } = this.props
+    alert(email)
+    this.props.dispatch(authUser('fakeid'))
   }
 
   onSignUp = () => {
@@ -110,6 +114,15 @@ const styles = StyleSheet.create({
   }
 });
 
-export default reduxForm({
+const LoginForm = reduxForm({
   form: 'login'
 })(Login)
+
+const selector = formValueSelector('login')
+
+const mapStateToProps = (state) => ({
+  email: selector(state, 'email'),
+  password: selector(state, 'password'),
+});
+
+export default connect(mapStateToProps)(LoginForm)

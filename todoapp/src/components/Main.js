@@ -4,15 +4,22 @@ import {connect} from 'react-redux'
 //import TodoItem from './TodoItem'
 //import {addTodo} from '../redux/actions'
 import Login from './Login'
+import TodoMain from './TodoMain'
 
 class Main extends Component {
 
     state = {}
 
     render() {
+      if (this.props.user_id) {
         return (
-            <Login />
-        )
+          <TodoMain />
+        );
+      } else {
+        return (
+          <Login />
+        );
+      }
     }
 }
 
@@ -27,7 +34,9 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-    return state
+  return {
+    user_id: state.auth.user_id
+  }
 }
 
 export default connect(mapStateToProps)(Main)
