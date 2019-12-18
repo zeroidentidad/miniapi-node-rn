@@ -13,8 +13,11 @@ app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use('/v1', router)
 
+//const IP = 'localhost'; // para emulador
+const IP = '192.168.0.105'; // en red local
+
 var PORT = process.env.PORT || 3000
-var HOST = process.env.HOST || 'localhost'
+var HOST = process.env.HOST || IP
 
 console.log('Start on', HOST, PORT)
 app.listen(PORT, HOST)

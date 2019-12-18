@@ -12,7 +12,7 @@ var localOptions = {
 
 var localStrategy = new LocalStrategy(localOptions, function (email, password, done) {
     //verificar username y password en la bd
-    User.findOne({email:email}, function(err, user) {
+    User.findOne({email:email.toLowerCase()}, function(err, user) {
         if(err){
             return done(err)
         }
