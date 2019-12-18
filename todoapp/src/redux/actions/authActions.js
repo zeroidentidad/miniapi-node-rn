@@ -1,14 +1,18 @@
 import axios from 'axios';
 import {SIGNIN_URL, SIGNUP_URL} from '../../api';
 import {addAlert} from './alertsActions';
+import * as Keychain from 'react-native-keychain';
 
 exports.loginUser = (email, password) => {
   return function(dispatch) {
 
     return axios.post(SIGNIN_URL, {email, password}).then((response) => {
       let {user_id, token} = response.data;
+      Keychain.setGenericPassword(user_id, token).then(function () {
           dispatch(authUser(user_id));
-          dispatch(addAlert(token));
+      }).catch((error) => {
+          dispatch(addAlert("No se puede acceder."));
+      });          
     }).catch((error) => {
       dispatch(addAlert("No se puede acceder."));
     });
@@ -20,9 +24,12 @@ exports.signupUser = (email, password) => {
   return function(dispatch) {
 
     return axios.post(SIGNUP_URL, {email, password}).then((response) => {
-      var {user_id, token} = response.data;
-          dispatch(authUser(user_id));
-          dispatch(addAlert(token));
+      let {user_id, token} = response.data;
+      Keychain.setGenericPassword(user_id, token).then(function () {
+        dispatch(authUser(user_id));
+      }).catch((error) => {
+        dispatch(addAlert("No se pudo registrar."));
+      }); 
     }).catch((error) => {
       dispatch(addAlert("No se pudo registrar."));
     });

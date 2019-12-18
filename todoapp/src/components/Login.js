@@ -17,8 +17,6 @@ class Login extends Component {
   onSignIn = () => {
     let {dispatch, email, password } = this.props
 
-    alert(email)
-
     this.setState({loading: true});
 
     dispatch(loginUser(email, password)).then(() => {
@@ -42,6 +40,15 @@ class Login extends Component {
 
     render() {  
 
+      if (this.state.loading) {
+        return (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ fontSize: 18, fontWeight:'bold', color:'green'}}>
+              🔄 Cargando...
+          </Text>
+          </View>
+        )
+      } else {
         return (
         <View style={styles.container}>
           <View style={styles.titleContainer}>
@@ -81,6 +88,8 @@ class Login extends Component {
           </View>
         </View>
         )
+      }      
+
     }
 }
 
