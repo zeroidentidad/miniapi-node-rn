@@ -1,49 +1,41 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, StatusBar, TextInput, ScrollView } from 'react-native'
-import {connect} from 'react-redux'
-import TodoItem from './TodoItem'
-import {addTodo} from '../redux/actions'
+import { Text, View, StyleSheet, StatusBar, TextInput, ScrollView, TouchableOpacity, RefreshControl } from 'react-native'
+import Icon from 'react-native-vector-icons/Octicons';
+import { StackNavigator } from "react-navigation";
+//import {connect} from 'react-redux'
+//import TodoItem from './TodoItem'
 
 class TodoList extends Component {
 
     state = {
-        newTodoText: ""
+        refreshing: false
     }
 
-    addNewTodo=()=>{
-        const { newTodoText } = this.state;
-        if (newTodoText && newTodoText!=""){
-            this.setState({ newTodoText: "" })
-            this.props.dispatch(addTodo(newTodoText))
-        }
+    onLogout = () => {
+
+    }    
+
+    addNewTodo = () =>{
+
     }
+
+    onRefresh = () =>{
+
+    }   
 
     render() {
 
-        const renderTodos = () => {
-            return this.props.todos.map((todo) => (<TodoItem text={todo.text} key={todo.id} id={todo.id} />))
-        }
-
         return (
             <View style={styles.container}>
-                <StatusBar barStyle="light-content" />
                 <View style={styles.topBar}>
-                    <Text style={styles.title}> To-Do </Text>
+                    <TouchableOpacity onPress={this.onLogout}>
+                        <Icon name="sign-out" size={20} color="white" />
+                    </TouchableOpacity>
+                    <Text style={styles.title}>To-Do List</Text>
+                    <TouchableOpacity onPress={this.addNewTodo}>
+                        <Icon name="diff-added" size={20} color="white" />
+                    </TouchableOpacity>
                 </View>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                    onChange={(e)=>{ this.setState({newTodoText: e.nativeEvent.text}) }}
-                    value={this.state.newTodoText}
-                    returnKeyType="done"
-                    placeholder="nuevo To-Do"
-                    onSubmitEditing={this.addNewTodo}
-                    style={styles.input} />
-                </View>
-                <ScrollView
-                automaticallyAdjustContentInsets={false}
-                >
-                {renderTodos()}
-                </ScrollView>
             </View>
         )
     }
@@ -54,14 +46,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'stretch',
-
     },
     topBar: {
         padding: 16,
         paddingTop: 28,
         paddingBottom: 8,
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: '#2ecc71'
     },
@@ -69,24 +60,42 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 20
     },
-    inputContainer: {
-        padding: 8,
-        paddingTop: 0,
-        backgroundColor: '#2ecc71'
-    },
-    input: {
-        height: 26,
-        padding: 4,
-        paddingLeft: 8,
-        borderRadius: 8,
-        backgroundColor: 'white'
+    todoContainer: {
+        padding: 16,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        marginTop: -1,
+        borderColor: '#ccc',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     }
-})
+});
 
-const mapStateToProps = (state) => {
+/**
+ * ###################################
+ * Definir la pantalla en sí mismas.
+ * ###################################
+ */
+const TodoListStackNav = StackNavigator(
+  /* ----------  Routes ----------  */
+  {
+    TodoList : { screen : TodoList },
+    //NewTodo : { screen : NewTodo }
+  },
+  /* ----------  Options ----------  */
+  {
+    headerMode : "none",
+    initialRouteName : "TodoList"
+  }
+); /* Fin StackNavigator. */
+
+
+/*const mapStateToProps = (state) => {
     return {
         todos: state.todos
     }
 }
 
-export default connect(mapStateToProps)(TodoList)
+export default connect(mapStateToProps)(TodoListNav)*/
+export default TodoListStackNav
