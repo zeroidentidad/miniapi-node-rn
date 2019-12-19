@@ -16,7 +16,12 @@ var userSchema = new Schema({
     },
     password: {
         type: String
-    }
+    },
+    todos: [
+        {
+            text: { type: String }
+        }
+    ]
 })
 
 userSchema.pre('save', function(next) {

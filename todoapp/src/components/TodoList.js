@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, StatusBar, TextInput, ScrollView, TouchableOpacity, RefreshControl } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, RefreshControl } from 'react-native'
 import Icon from 'react-native-vector-icons/Octicons';
-import { StackNavigator } from "react-navigation";
-//import {connect} from 'react-redux'
-//import TodoItem from './TodoItem'
+import {connect} from 'react-redux'
+import TodoItem from './TodoItem'
+import {unauthUser, getTodos, setTodos} from '../redux/actions'
 
 class TodoList extends Component {
 
@@ -12,30 +12,48 @@ class TodoList extends Component {
     }
 
     onLogout = () => {
-
+        this.props.dispatch(setTodos([]));
+        this.props.dispatch(unauthUser);
     }    
 
     addNewTodo = () =>{
-
+        this.props.navigation.navigate("NewTodo");
     }
 
     onRefresh = () =>{
-
+        this.setState({ refreshing: true });
+        this.props.dispatch(getTodos).then(() => {
+            this.setState({ refreshing: false });
+        })
     }   
 
     render() {
+
+        const renderTodos = () => {
+            return this.props.todos.map((todo) => (<TodoItem key={todo._id} text={todo.text} id={todo._id} />))
+        }
 
         return (
             <View style={styles.container}>
                 <View style={styles.topBar}>
                     <TouchableOpacity onPress={this.onLogout}>
-                        <Icon name="sign-out" size={20} color="white" />
+                        <Icon name="sign-out" size={32} color="white" />
                     </TouchableOpacity>
                     <Text style={styles.title}>To-Do List</Text>
                     <TouchableOpacity onPress={this.addNewTodo}>
-                        <Icon name="diff-added" size={20} color="white" />
+                        <Icon name="diff-added" size={32} color="white" />
                     </TouchableOpacity>
                 </View>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.onRefresh} />
+                    }
+                    automaticallyAdjustContentInsets={false}
+                    contentContainerStyle={styles.scrollViewContainer}>
+                    {renderTodos()}
+                </ScrollView>
             </View>
         )
     }
@@ -50,7 +68,7 @@ const styles = StyleSheet.create({
     topBar: {
         padding: 16,
         paddingTop: 28,
-        paddingBottom: 8,
+        paddingBottom: 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -59,43 +77,14 @@ const styles = StyleSheet.create({
     title: {
         color: 'white',
         fontSize: 20
-    },
-    todoContainer: {
-        padding: 16,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        marginTop: -1,
-        borderColor: '#ccc',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
     }
 });
 
-/**
- * ###################################
- * Definir la pantalla en sí mismas.
- * ###################################
- */
-const TodoListStackNav = StackNavigator(
-  /* ----------  Routes ----------  */
-  {
-    TodoList : { screen : TodoList },
-    //NewTodo : { screen : NewTodo }
-  },
-  /* ----------  Options ----------  */
-  {
-    headerMode : "none",
-    initialRouteName : "TodoList"
-  }
-); /* Fin StackNavigator. */
 
-
-/*const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
     return {
         todos: state.todos
     }
 }
 
-export default connect(mapStateToProps)(TodoListNav)*/
-export default TodoListStackNav
+export default connect(mapStateToProps)(TodoList)
