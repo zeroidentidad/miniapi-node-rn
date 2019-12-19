@@ -10,7 +10,8 @@ var router = require('./services/router')
 mongoose.connect('mongodb://localhost:27017/miniapi-node-rn_mongodb_1')
 
 app.use(morgan('combined'))
-app.use(bodyParser.json())
+//app.use(bodyParser.json()) ->
+app.use(express.json())
 app.use('/v1', router)
 
 const config = require('./config')
