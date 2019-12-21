@@ -67,6 +67,7 @@ class Login extends Component {
           </View>
           <View style={styles.field}>
             <Field
+              secureTextEntry={true} 
               name={'password'}
               component={FTextInput}
               placeholder="Password"
